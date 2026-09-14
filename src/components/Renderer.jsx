@@ -271,6 +271,24 @@ function renderChildren(node, props) {
   ));
 }
 
+function containsId(node, id) {
+  if (!node || !id) {
+    return false;
+  }
+
+  if (node.id === id || id.startsWith(`${node.id}-`)) {
+    return true;
+  }
+
+  return (node.children || []).some((child) => containsId(child, id));
+}
+
+function cardClassName(node, selectedId) {
+  const base = (node.className || "").replace(/\bfeatured\b/g, "").trim();
+  const active = containsId(node, selectedId);
+  return [base, active ? "featured" : ""].filter(Boolean).join(" ");
+}
+
 function RenderNode({ node, ...props }) {
   const className = node.className || "";
   const { onNodeChange, selectedId, onSelect } = props;
@@ -347,7 +365,7 @@ function RenderNode({ node, ...props }) {
 
     case "card":
       return (
-        <article className={className}>
+        <article className={cardClassName(node, selectedId)}>
           {renderChildren(node, props)}
         </article>
       );
