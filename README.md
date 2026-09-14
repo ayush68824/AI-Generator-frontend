@@ -11,7 +11,3 @@ App: `http://localhost:5173`
 API: `http://localhost:4000`
 
 Try prompts: `pricing`, `hero`, `features`.
-
-## Contributors
-
-- Cursor
