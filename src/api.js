@@ -1,7 +1,16 @@
-const API_URL = "http://localhost:4000/api";
+function apiBase() {
+  let base = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+  base = base.replace(/\/+$/, "");
+
+  if (!base.endsWith("/api")) {
+    base = `${base}/api`;
+  }
+
+  return base;
+}
 
 async function generateLayout(prompt) {
-  const response = await fetch(`${API_URL}/generate`, {
+  const response = await fetch(`${apiBase()}/generate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -19,7 +28,7 @@ async function generateLayout(prompt) {
 }
 
 async function saveLayout(layout) {
-  const response = await fetch(`${API_URL}/save`, {
+  const response = await fetch(`${apiBase()}/save`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

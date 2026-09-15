@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PromptBar from "./components/PromptBar";
 import Renderer from "./components/Renderer";
 import { generateLayout, saveLayout } from "./api";
@@ -25,6 +25,25 @@ function App() {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    function onPopState() {
+      setLayout(null);
+      setMessage("");
+    }
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  function goHome() {
+    setLayout(null);
+    setMessage("");
+
+    if (window.history.state?.view === "preview") {
+      window.history.back();
+    }
+  }
+
   async function handleGenerate(nextPrompt = prompt) {
     const value = nextPrompt.trim();
 
@@ -39,6 +58,10 @@ function App() {
     try {
       const nextLayout = await generateLayout(value);
       setLayout(nextLayout);
+
+      if (window.history.state?.view !== "preview") {
+        window.history.pushState({ view: "preview" }, "");
+      }
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -82,6 +105,7 @@ function App() {
         setPrompt={setPrompt}
         onGenerate={handleGenerate}
         onSave={handleSave}
+        onHome={goHome}
         isGenerating={isGenerating}
         isSaving={isSaving}
       />

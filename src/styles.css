@@ -56,7 +56,11 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-self: start;
+  border: 0;
+  padding: 0;
   color: #111827;
+  background: transparent;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.03em;

@@ -21,6 +21,7 @@ function PromptBar({
   setPrompt,
   onGenerate,
   onSave,
+  onHome,
   isGenerating,
   isSaving
 }) {
@@ -31,10 +32,10 @@ function PromptBar({
 
   return (
     <header className="topbar">
-      <div className="brand">
+      <button className="brand" type="button" onClick={onHome} aria-label="Home">
         <UncodyMark />
         <span>Uncody</span>
-      </div>
+      </button>
 
       <form className="prompt-form" onSubmit={handleSubmit}>
         <input
